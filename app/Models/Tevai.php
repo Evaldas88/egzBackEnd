@@ -10,7 +10,7 @@ class Tevai extends Model
     use HasFactory;
 
 	    protected $fillable = [
-        'name', 'class', 'personalCode', 'darzelis_id'
+        'name', 'lname', 'class','birthday', 'personalCode', 'darzelis_id'
     ];
     public function countries()
     {

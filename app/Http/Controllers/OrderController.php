@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Hotels;
 use App\Models\Order;
 
  use App\Models\Darzelis;
 use App\Models\Tevai;
 use Illuminate\Http\Request;
 
-class OrdersController extends Controller
+class OrderController extends Controller
 {
 
     public function index()
@@ -19,16 +18,22 @@ class OrdersController extends Controller
         $generatedOrders = [];
 
         foreach ($orders as $order) {
-            $hotel = Tevai::find($order->tevais_id);
-            if($hotel->country_id) {
-                $country = Darzelis::find($hotel->darzelis_id);
-                $order['country_name'] = $country->name;
+            $school = Tevai::find($order->tevai_id);
+            if($school->darzelis_id) {
+                $country = Darzelis::find($school->darzelis_id);
+                // $order['tevai_name'] = $country->name;
+                $order['tevai_lname'] = $country->lname;
+
             } else {
-                $order['country_name'] = 'Not assigned';
+                $order['tevai_name'] = 'Not assigned';
             }
-            $order['hotel_name'] = $hotel->name;
-            $order['class'] = $hotel->class;
-            $order['personalCode'] = $hotel->personalCode;
+
+            $order['tevai_name'] = $school->name;
+            $order['tevai_lname'] = $country->lname;
+
+            $order['class'] = $school->class;
+            $order['birthday'] = $school->birthday;
+            $order['personalCode'] = $school->personalCode;
              $generatedOrders[] = $order;
         }
 
@@ -59,16 +64,21 @@ class OrdersController extends Controller
         $generatedOrders = [];
 
         foreach ($orders as $order) {
-            $hotel = Tevai::find($order->tevais_id);
-            if($hotel->tevais_id) {
-                $country = Darzelis::find($hotel->darzelis_id);
-                $order['country_name'] = $country->name;
+            $school = Tevai::find($order->tevai_id);
+            if($school->tevai_id) {
+                $country = Darzelis::find($school->darzelis_id);
+                $order['tevai_name'] = $country->name;
+                $order['tevai_lname'] = $country->lname;
+
             } else {
-                $order['country_name'] = 'Not assigned';
+                $order['tevai_name'] = 'Not assigned';
+                $order['tevai_lname'] = 'Not assigned';
+
             }
-            $order['hotel_name'] = $hotel->name;
-            $order['class'] = $hotel->class;
-            $order['personalCode'] = $hotel->personalCode;
+            $order['tevai_name'] = $school->name;
+            $order['class'] = $school->class;
+            $order['birthday'] = $school->birthday;
+            $order['personalCode'] = $school->personalCode;
             $generatedOrders[] = $order;
         }
 
@@ -82,13 +92,13 @@ class OrdersController extends Controller
 
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'hotel_id' => 'required'
-        ]);
+        // $this->validate($request, [
+        //     'tevai_id' => 'required'
+        // ]);
 
 
         $order = new Order();
-        $order->tevais_id = $request->tevais_id;
+        $order->tevai_id = $request->tevai_id;
         $order->approved = 0;
         $order->user_id = auth()->user()->id;
 

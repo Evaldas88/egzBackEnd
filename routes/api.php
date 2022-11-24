@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Response;
 use App\Http\Controllers\DarzelisController;
-use App\Http\Controllers\OrdersController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\TevaiController;
 use App\Http\Controllers\PassportAuthController;
 
@@ -44,8 +44,8 @@ Route::get('tevai/darzelis/{id}', [TevaiController::class, 'byDarzelis']);
 Route::post('tevai/{id}', [TevaiController::class, 'update'])->middleware('auth:api');
 Route::delete('tevai/{id}', [TevaiController::class, 'destroy'])->middleware('auth:api');
 
-Route::get('orders', [OrdersController::class, 'index'])->middleware('auth:api');
-Route::get('orders/all', [OrdersController::class, 'all'])->middleware('auth:api');
-Route::get('orders/{id}', [OrdersController::class, 'status'])->middleware('auth:api');
-Route::post('orders', [OrdersController::class, 'store'])->middleware('auth:api');
-Route::delete('orders/{id}', [OrdersController::class, 'destroy'])->middleware('auth:api');
+Route::get('orders', [OrderController::class, 'index'])->middleware('auth:api');
+Route::get('orders/all', [OrderController::class, 'all'])->middleware('auth:api');
+Route::get('orders/{id}', [OrderController::class, 'status'])->middleware('auth:api');
+Route::post('orders', [OrderController::class, 'store'])->middleware('auth:api');
+Route::delete('orders/{id}', [OrderController::class, 'destroy'])->middleware('auth:api');

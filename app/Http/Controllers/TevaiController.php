@@ -11,10 +11,10 @@ class TevaiController extends Controller
 
     public function index()
     {
-        $kids= Tevai::all();
+        $kids = Tevai::all();
 
         foreach ($kids as $kid) {
-            if($kid->darzelis_id) {
+            if ($kid->darzelis_id) {
                 $darzelis = Darzelis::find($kid->darzelis_id);
                 $kid->darzelis = $darzelis->name;
             } else {
@@ -68,7 +68,9 @@ class TevaiController extends Controller
 
         $tevai = new Tevai();
         $tevai->name = $request->name;
+        $tevai->lname = $request->lname;
         $tevai->class = $request->class;
+        $tevai->birthday = $request->birthday;
         $tevai->personalCode = $request->personalCode;
 
 
@@ -133,7 +135,7 @@ class TevaiController extends Controller
                 'success' => true,
                 'message' => 'Kid deleted'
             ]);
-        } catch(\Illuminate\Database\QueryException $e) {
+        } catch (\Illuminate\Database\QueryException $e) {
             return response()->json([
                 'success' => false,
                 'message' => 'The Kid cannot be deleted because it is assigned to a school'

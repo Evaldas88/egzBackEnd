@@ -16,8 +16,10 @@ return new class extends Migration
         Schema::create('tevais', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('lname');
             $table->string('class');
-            $table->float('personalCode') ;
+            $table->float('personalCode', 9, 0) ;
+            $table->string('birthday') ;
              $table->bigInteger('darzelis_id')->nullable()->unsigned();
             $table->foreign('darzelis_id')->references('id')->on('darzelis')->onDelete('set null');
             $table->timestamps();
