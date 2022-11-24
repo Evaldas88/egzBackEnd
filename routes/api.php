@@ -39,7 +39,7 @@ Route::delete('darzelis/{id}', [DarzelisController::class, 'destroy'])->middlewa
 
 Route::get('tevai', [TevaiController::class, 'index']);
 Route::get('tevai/{id}', [TevaiController::class, 'show']);
-Route::get('tevai/darzelis/{id}', [TevaiController::class, 'byTevai']);
+Route::get('tevai/darzelis/{id}', [TevaiController::class, 'byDarzelis']);
  Route::post('tevai', [TevaiController::class, 'store'])->middleware('auth:api');
 Route::post('tevai/{id}', [TevaiController::class, 'update'])->middleware('auth:api');
 Route::delete('tevai/{id}', [TevaiController::class, 'destroy'])->middleware('auth:api');

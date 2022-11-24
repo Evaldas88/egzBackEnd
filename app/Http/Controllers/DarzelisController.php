@@ -36,7 +36,7 @@ class DarzelisController extends Controller
         else
             return response()->json([
                 'success' => false,
-                'message' => 'No country found with this id'
+                'message' => 'No school  found with this id'
             ], 500);
     }
 
@@ -52,7 +52,7 @@ class DarzelisController extends Controller
 
         $this->validate($request, [
             'name' => 'required',
-            'season' => 'required'
+            'code' => 'required'
         ]);
 
 
@@ -84,7 +84,7 @@ class DarzelisController extends Controller
 
         $this->validate($request, [
             'name' => 'required',
-            'season' => 'required'
+            'code' => 'required'
         ]);
 
 

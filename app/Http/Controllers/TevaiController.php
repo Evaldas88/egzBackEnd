@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Darzelis;
 use App\Models\Tevai;
 use Illuminate\Http\Request;
 
@@ -10,17 +11,26 @@ class TevaiController extends Controller
 
     public function index()
     {
-        $countries = Tevai::all();
+        $kids= Tevai::all();
 
-        if ($countries)
+        foreach ($kids as $kid) {
+            if($kid->darzelis_id) {
+                $darzelis = Darzelis::find($kid->darzelis_id);
+                $kid->darzelis = $darzelis->name;
+            } else {
+                $kid->darzelis = 'Not selected';
+            }
+        }
+
+        if ($kids)
             return response()->json([
                 'success' => true,
-                'message' => $countries
+                'message' => $kids
             ]);
         else
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to get list of countries'
+                'message' => 'Failed to get Kids list'
             ], 500);
     }
 
@@ -36,7 +46,7 @@ class TevaiController extends Controller
         else
             return response()->json([
                 'success' => false,
-                'message' => 'No country found with this id'
+                'message' => 'No Kids found with this id'
             ], 500);
     }
 
@@ -52,7 +62,7 @@ class TevaiController extends Controller
 
         $this->validate($request, [
             'name' => 'required',
-            'season' => 'required'
+            'personalCode' => 'required'
         ]);
 
 
@@ -70,7 +80,7 @@ class TevaiController extends Controller
         else
             return response()->json([
                 'success' => false,
-                'message' => 'Cant save country'
+                'message' => 'Cant save Kids info'
             ], 500);
     }
 
@@ -86,7 +96,7 @@ class TevaiController extends Controller
 
         $this->validate($request, [
             'name' => 'required',
-            'season' => 'required'
+            'personalCode' => 'required'
         ]);
 
 
@@ -95,12 +105,12 @@ class TevaiController extends Controller
         if ($tevai->update($request->all()))
             return response()->json([
                 'success' => true,
-                'message' => 'Country updated'
+                'message' => 'Kid updated'
             ]);
         else
             return response()->json([
                 'success' => false,
-                'message' => 'cant save country'
+                'message' => 'cant save Kid'
             ], 500);
     }
 
@@ -121,13 +131,28 @@ class TevaiController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'Country deleted'
+                'message' => 'Kid deleted'
             ]);
         } catch(\Illuminate\Database\QueryException $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'The country cannot be deleted because it is assigned to a hotel'
+                'message' => 'The Kid cannot be deleted because it is assigned to a school'
             ], 500);
         }
+    }
+    public function byDarzelis($id)
+    {
+        $school = Darzelis::where('darzelis_id', $id);
+
+        if ($school->get())
+            return response()->json([
+                'success' => true,
+                'message' => $school->get()
+            ]);
+        else
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to get school list'
+            ], 500);
     }
 }
