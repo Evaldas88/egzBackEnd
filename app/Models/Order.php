@@ -5,14 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Darzelis extends Model
+class Order extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'name', 'code'
+        'approved'
     ];
-    public function parents()
+
+    public function tevai()
     {
-        return $this->hasMany(Tevai::class);
+        return $this->belongsTo(Tevai::class, 'tevais_id');
     }
 }

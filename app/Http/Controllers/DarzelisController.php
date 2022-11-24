@@ -7,79 +7,125 @@ use Illuminate\Http\Request;
 
 class DarzelisController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
-        //
+        $Darzelis = Darzelis::all();
+
+        if ($Darzelis)
+            return response()->json([
+                'success' => true,
+                'message' => $Darzelis
+            ]);
+        else
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to get list of countries'
+            ], 500);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function show($id, Request $request)
     {
-        //
+        $Darzelis = Darzelis::where('id', $id);
+
+        if ($Darzelis->get())
+            return response()->json([
+                'success' => true,
+                'message' => $Darzelis->get()
+            ]);
+        else
+            return response()->json([
+                'success' => false,
+                'message' => 'No country found with this id'
+            ], 500);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+
     public function store(Request $request)
     {
-        //
+        //Authentification
+        if (auth()->user()->role != 0)
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthorized'
+            ], 401);
+
+        $this->validate($request, [
+            'name' => 'required',
+            'season' => 'required'
+        ]);
+
+
+        $Darzelis = new Darzelis();
+        $Darzelis->name = $request->name;
+        $Darzelis->code = $request->code;
+
+        if ($Darzelis->save())
+            return response()->json([
+                'success' => true,
+                'message' => $Darzelis->toArray()
+            ]);
+        else
+            return response()->json([
+                'success' => false,
+                'message' => 'Cant save country'
+            ], 500);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Darzelis  $darzelis
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Darzelis $darzelis)
+
+    public function update($id, Request $request)
     {
-        //
+        //Authentification
+        if (auth()->user()->role != 0)
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthorized'
+            ], 401);
+
+        $this->validate($request, [
+            'name' => 'required',
+            'season' => 'required'
+        ]);
+
+
+        $Darzelis = Darzelis::where('id', $id);
+
+        if ($Darzelis->update($request->all()))
+            return response()->json([
+                'success' => true,
+                'message' => 'Country updated'
+            ]);
+        else
+            return response()->json([
+                'success' => false,
+                'message' => 'cant save country'
+            ], 500);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Darzelis  $darzelis
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Darzelis $darzelis)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Darzelis  $darzelis
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Darzelis $darzelis)
+    public function destroy($id, Request $request)
     {
-        //
-    }
+        //Authentification
+        if (auth()->user()->role != 0)
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthorized'
+            ], 401);
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Darzelis  $darzelis
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Darzelis $darzelis)
-    {
-        //
+        try {
+            $Darzelis = Darzelis::where('id', $id);
+
+            $Darzelis->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Country deleted'
+            ]);
+        } catch(\Illuminate\Database\QueryException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'The country cannot be deleted because it is assigned to a hotel'
+            ], 500);
+        }
     }
 }
