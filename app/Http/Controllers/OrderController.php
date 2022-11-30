@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 
- use App\Models\Darzelis;
-use App\Models\Tevai;
-use Illuminate\Http\Request;
+use App\Models\Parents;
+ use App\Models\School;
+ use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
@@ -18,20 +18,16 @@ class OrderController extends Controller
         $generatedOrders = [];
 
         foreach ($orders as $order) {
-            $school = Tevai::find($order->tevai_id);
-            if($school->darzelis_id) {
-                $country = Darzelis::find($school->darzelis_id);
-                // $order['tevai_name'] = $country->name;
-                $order['tevai_lname'] = $country->lname;
+            $school = Parents::find($order->parents_id);
+            if($school->schools_id) {
+                $school = School::find($school->schools_id);
+                 $order['parents_name'] = $school->name;
 
             } else {
-                $order['tevai_name'] = 'Not assigned';
+                $order['parents_name'] = 'Not assigned';
             }
-
-            $order['tevai_name'] = $school->name;
-            $order['tevai_lname'] = $country->lname;
-
-            $order['class'] = $school->class;
+            $order['parents_name'] = $school->name;
+             $order['class'] = $school->class;
             $order['birthday'] = $school->birthday;
             $order['personalCode'] = $school->personalCode;
              $generatedOrders[] = $order;
@@ -64,18 +60,17 @@ class OrderController extends Controller
         $generatedOrders = [];
 
         foreach ($orders as $order) {
-            $school = Tevai::find($order->tevai_id);
-            if($school->tevai_id) {
-                $country = Darzelis::find($school->darzelis_id);
-                $order['tevai_name'] = $country->name;
-                $order['tevai_lname'] = $country->lname;
+            $school = Parents::find($order->parents_id);
+            if($school->parents_id) {
+                $school = School::find($school->schools_id);
+                $order['parent_lname'] = $school->lname;
 
             } else {
-                $order['tevai_name'] = 'Not assigned';
-                $order['tevai_lname'] = 'Not assigned';
+                $order['parent_name'] = 'Not assigned';
 
             }
-            $order['tevai_name'] = $school->name;
+            $order['parent_name'] = $school->name;
+            $order['parent_lname'] = $school->lname;
             $order['class'] = $school->class;
             $order['birthday'] = $school->birthday;
             $order['personalCode'] = $school->personalCode;
@@ -98,7 +93,7 @@ class OrderController extends Controller
 
 
         $order = new Order();
-        $order->tevai_id = $request->tevai_id;
+        $order->parents_id = $request->parents_id;
         $order->approved = 0;
         $order->user_id = auth()->user()->id;
 

@@ -5,12 +5,11 @@
 use Illuminate\Http\Request;
 // use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PostController;
-use Illuminate\Support\Facades\Response;
-use App\Http\Controllers\DarzelisController;
-use App\Http\Controllers\OrderController;
-use App\Http\Controllers\TevaiController;
-use App\Http\Controllers\PassportAuthController;
+ use Illuminate\Support\Facades\Response;
+ use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ParentsController;
+ use App\Http\Controllers\PassportAuthController;
+use App\Http\Controllers\SchoolController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,19 +29,19 @@ Route::get('authcheck', [PassportAuthController::class, 'index'])->middleware('a
 
 
 
-Route::get('darzelis', [DarzelisController::class, 'index']);
-Route::get('darzelis/{id}', [DarzelisController::class, 'show']);
-Route::post('darzelis', [DarzelisController::class, 'store'])->middleware('auth:api');
-Route::put('darzelis/{id}', [DarzelisController::class, 'update'])->middleware('auth:api');
-Route::delete('darzelis/{id}', [DarzelisController::class, 'destroy'])->middleware('auth:api');
+Route::get('school', [SchoolController::class, 'index']);
+Route::get('school/{id}', [SchoolController::class, 'show']);
+Route::post('school', [SchoolController::class, 'store'])->middleware('auth:api');
+Route::put('school/{id}', [SchoolController::class, 'update'])->middleware('auth:api');
+Route::delete('school/{id}', [SchoolController::class, 'destroy'])->middleware('auth:api');
 
 
-Route::get('tevai', [TevaiController::class, 'index']);
-Route::get('tevai/{id}', [TevaiController::class, 'show']);
-Route::get('tevai/darzelis/{id}', [TevaiController::class, 'byDarzelis']);
- Route::post('tevai', [TevaiController::class, 'store'])->middleware('auth:api');
-Route::post('tevai/{id}', [TevaiController::class, 'update'])->middleware('auth:api');
-Route::delete('tevai/{id}', [TevaiController::class, 'destroy'])->middleware('auth:api');
+Route::get('parents', [ParentsController::class, 'index']);
+Route::get('parents/{id}', [ParentsController::class, 'show']);
+Route::get('parents/school/{id}', [ParentsController::class, 'bySchool']);
+ Route::post('parents', [ParentsController::class, 'store'])->middleware('auth:api');
+Route::post('parents/{id}', [ParentsController::class, 'update'])->middleware('auth:api');
+Route::delete('parents/{id}', [ParentsController::class, 'destroy'])->middleware('auth:api');
 
 Route::get('orders', [OrderController::class, 'index'])->middleware('auth:api');
 Route::get('orders/all', [OrderController::class, 'all'])->middleware('auth:api');

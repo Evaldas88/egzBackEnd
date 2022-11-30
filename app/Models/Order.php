@@ -14,6 +14,6 @@ class Order extends Model
 
     public function tevai()
     {
-        return $this->belongsTo(Tevai::class, 'tevai_id');
+        return $this->belongsTo(Parents::class, 'parents_id');
     }
 }

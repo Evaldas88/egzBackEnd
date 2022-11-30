@@ -5,14 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Darzelis extends Model
+class School extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'name', 'code'
+        'name', 'code', 'address'
     ];
     public function parents()
     {
-        return $this->hasMany(Tevai::class);
+        return $this->hasMany(Parents::class);
     }
 }
